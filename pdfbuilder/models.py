@@ -87,7 +87,7 @@ class Configuration(models.Model):
         return self.get_option("pagenumbers", default=False, asbool=True)
 
     def template(self):
-        return self.get_option("template", "threecolumn_withcomments")
+        return self.get_option("template", "threecolumn_down")
 
 
 class SavedPdf(models.Model):

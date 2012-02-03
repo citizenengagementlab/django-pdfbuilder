@@ -13,6 +13,7 @@ def available_orderings():
     return [(key, val[1]) for key, val in _orderings.items()]
 def get_ordering(id):
     return _orderings[id][0]
+register_ordering(None, "none", "Do not order entries")
 
 _groupings = {}
 def register_grouping(grouping_fn, id, name=None):
