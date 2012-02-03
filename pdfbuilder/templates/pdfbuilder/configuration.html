@@ -1,0 +1,104 @@
+{% extends "pdfbuilder/base.html" %}
+
+{% block pdfbuilder_content %}
+<div style="border: 2px solid black;">
+<form method="POST" 
+      action="{% url view-configuration config.id %}{% if request.GET.data_source %}?data_source={{request.GET.data_source}}{% endif %}">
+
+{% csrf_token %}
+<p>
+<label for="description">Description</label>
+<textarea name="description">{% if config.name %}{{config.name}}{% endif %}</textarea>
+</p>
+<p>
+<label for="footer">Header</label>
+<textarea name="header">{% if config.header %}{{config.header}}{% endif %}</textarea>
+</p>
+<p>
+<label for="footer">Footer</label>
+<textarea name="footer">{% if config.footer %}{{config.footer}}{% endif %}</textarea>
+</p>
+<p>
+<label for="pagenumbers">Number Pages?</label>
+<input type="radio" name="pagenumbers" value="on"
+       {% if config.number_pages %}checked="checked"{% endif %}
+       />Yes
+<input type="radio" name="pagenumbers" value="off"
+       {% if not config.number_pages %}checked="checked"{% endif %}
+       />No
+</p>
+<p>
+<label for="entrynumbers">Number Entries?</label>
+<input type="radio" name="entrynumbers" value="on"
+       {% if config.number_entries %}checked="checked"{% endif %}
+       />Yes
+<input type="radio" name="entrynumbers" value="off"
+       {% if not config.number_entries %}checked="checked"{% endif %}
+       />No
+</p>
+<p>
+<label for="template">Layout Template</label>
+<select name="template">
+  {% for template, name in templates %}
+  <option value="{{template}}"
+	  {% ifequal template config.template %}selected="selected"{% endifequal %}
+	  >
+    {{name}}
+  </option>
+  {% endfor %}
+</select>
+</p>
+<p>
+<label for="order_by">Ordering of Results</label>
+<select name="order_by">
+  {% for order, name in orderings %}
+  <option value="{{order}}"
+	  {% ifequal order config.order_by %}selected="selected"{% endifequal %}
+	  >
+    {{name}}
+  </option>
+  {% endfor %}
+</select>
+</p>
+<p>
+<label for="group_by">Grouping of Results</label>
+<select name="group_by">
+  {% for grouping, name in groupings %}
+  <option value="{{grouping}}"
+	  {% ifequal grouping config.group_by %}selected="selected"{% endifequal %}
+	  >
+    {{name}}
+  </option>
+  {% endfor %}
+</select>
+</p>
+
+{% include "pdfbuilder/snippets/configuration_form_filters.html" %}
+
+<input type="submit" />
+</form>
+</div>
+
+<br />
+<form method="GET"
+      action="{% url export-pdf config.pk %}">
+  <input type="hidden" name="data_source"
+	 value="{{request.GET.data_source}}" />
+  <input type="submit" value="Try it"></input>
+</form>
+
+<form method="POST" action="{% url create-configuration %}">
+  {% csrf_token %}
+  <input type="hidden" name="clone_from" 
+	 value="{{config.pk}}" />
+  <input type="submit" value="Clone it"></input>
+</form>
+
+{% if not saved_pdfs %}
+<h1>No PDFs generated from this configuration yet</h1>
+{% else %}
+<h1>PDFs generated from this configuration</h1>
+{% include "pdfbuilder/snippets/pdf_table.html" %}
+{% endif %}
+
+{% endblock %}

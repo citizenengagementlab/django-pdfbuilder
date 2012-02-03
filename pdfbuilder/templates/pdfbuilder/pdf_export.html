@@ -1,0 +1,65 @@
+{% extends "pdfbuilder/base.html" %}
+
+{% block pdfbuilder_head %}
+  <script type="text/javascript">
+    var logKey;
+    var poller = function() {
+      $.get("{% url pdf-export-log config.pk %}?key="+logKey, function(data) {
+        if( $("#status").hasClass("finished") ) 
+          return;
+        if( data != "PDF generation complete." ) {
+          $("#status").text(data);
+          window.setTimeout(poller, 1000);
+          return;
+        }
+        $("#status").text(data + " Download at leisure!");
+      });
+    };
+    var showResults = function(data) {
+      $("#status").html(data);
+      $("#status").addClass("finished");
+      $("input[type=submit]").attr("disabled", "disabled");
+    };
+    $(window).load(function() {
+      var token = $("input[name=csrfmiddlewaretoken]").val();
+      $.post("{% url pdf-export-log config.pk %}", {csrfmiddlewaretoken: token}, function(data) {
+        logKey = data;
+        $("input[name=key]").val(data);
+        $("input[type=submit]").removeAttr("disabled");
+        window.setTimeout(poller, 1000);
+      });
+    });
+    var submitAndPoll = function() {
+      var comment = $("#comment").val();
+      var data_source = $("#data_source").val();
+      var coverletter = $("#coverletter").val();
+      var token = $("input[name=csrfmiddlewaretoken]").val();
+      $.post(".", {key: logKey,
+                   comment: comment,
+                   coverletter: coverletter,
+                   data_source: data_source,
+                   csrfmiddlewaretoken: token}, 
+             showResults);
+      $("input[type=submit]").attr("disabled", "disabled");
+    };
+  </script>
+{% endblock %}
+
+{% block pdfbuilder_content %}
+  <div id="status"></div>
+  <form action="." method="POST" >
+	onsubmit="submitAndPoll(); return false;">
+    {% csrf_token %}
+    <input type="hidden" name="key" />
+
+    {% include "pdfexport/snippets/pdf_export_form_data_source.html" %}
+
+    Include a coverletter?
+    <textarea rows="10" id="coverletter" name="coverletter"></textarea>
+    <br />
+    Leave a note?
+    <textarea id="comment" name="comment"></textarea>
+    <input type="submit" name="Generate PDF" 
+	   disabled="disabled" />
+  </form>
+{% endblock %}

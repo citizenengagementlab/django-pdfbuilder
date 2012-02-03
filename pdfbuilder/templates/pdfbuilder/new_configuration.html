@@ -1,0 +1,8 @@
+{% extends "pdfbuilder/base.html" %}
+
+{% block pdfbuilder_content %}
+<form method="POST">
+{% csrf_token %}
+<input type="submit" value="Create a new configuration" />
+</form>
+{% endblock %}

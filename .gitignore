@@ -1,0 +1,10 @@
+ve
+*~
+*.pyc
+local_settings.py
+.#*
+#*
+*#
+*.db
+/static/
+*.egg-info

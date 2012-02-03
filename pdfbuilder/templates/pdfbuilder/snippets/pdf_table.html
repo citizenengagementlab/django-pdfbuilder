@@ -1,0 +1,29 @@
+<table>
+<thead>
+<tr>
+  <th>Download</th>
+  <th>Date Created</th>
+  <th>Author</th>
+  <th>Data source</th>
+  <th>Grouping</th>
+  <th>Comment</th>
+  <th>Configuration</th>
+</thead>
+<tbody>
+{% for pdf in saved_pdfs %}
+<tr>
+  <td><a href="{{pdf.get_absolute_url}}">link</a></td>
+  <td>{{pdf.created|date}}, {{pdf.created|time}}</td>
+  <td>{{pdf.author.username}}</td>
+  <td>{{pdf.data_source}}</td>
+  <td>{{pdf.group}}</td>
+  <td>{{pdf.comment}}</td>
+  <td>
+    {% with pdf.configuration as config %}
+    <a href="{{config.get_absolute_url}}">{{config}}</a>
+    {% endwith %}
+  </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
