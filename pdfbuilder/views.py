@@ -129,7 +129,6 @@ def prepare_pdf_export(request, config_id):
 def page_export_pdf(request, config_id):
     config = get_object_or_404(Configuration, pk=config_id)
     if request.method == "GET":
-        data_sources = registry.available_data_sources()
         return {'config': config}
 
     log_filename = request.POST.get("key")
