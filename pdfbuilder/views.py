@@ -10,7 +10,6 @@ from djangohelpers import rendered_with
 import ho.pisa as pisa
 import markdown
 import os
-from pkg_resources import resource_filename
 import pprint
 import pyPdf
 from reportlab.pdfgen import canvas
@@ -23,6 +22,7 @@ from pdfbuilder.basetemplates import (NumberedCanvas,
 from pdfbuilder.models import (Configuration,
                                SavedPdf)
 from pdfbuilder import registry
+from pdfbuilder import app_settings
 
 @rendered_with("pdfbuilder/new_configuration.html")
 @allow_http("GET", "POST")
@@ -194,8 +194,7 @@ def page_export_pdf(request, config_id):
     if cover_letter:
         print >> logger, "Generating cover letter..."
         logger.flush()
-        _default_css = open(os.path.abspath(
-                resource_filename("pdfbuilder", "pisa-default.css")))
+        _default_css = open(app_settings.PDFBUILDER_COVERLETTER_CSS)
         DEFAULT_CSS = _default_css.read()
         _default_css.close()
         del(_default_css)

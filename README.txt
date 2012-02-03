@@ -74,10 +74,24 @@ PDF (using the pisa/xhtml2pdf library) and will then be merged with
 the primary output PDF (using the pyPdf library) when that PDF has
 been saved.
 
-There is a pisa CSS stylesheet that is used to control the font sizes,
-margins and other styling options for the cover letter.  It is in
-`pdfbuilder/pisa-default.css` and is set to use the same fonts and
-margins as the primary output PDF.
+A pisa CSS stylesheet is used to control the font sizes, margins
+and other styling options for the cover letter.  A default stylesheet
+is provided in ``pdfbuilder/pisa-default.css`` which is set to use the 
+same fonts and margins that are used for the primary output PDF in
+the default templates provided.
+
+If you customize the templates you may need to customize the CSS
+for the cover letter to ensure that the styles match.  To do this,
+fork the provided ``pdfbuilder/pisa-default.css`` file into your project
+and spell out the path to it in your project's ``settings.py`` like::
+
+  PDFBUILDER_COVERLETTER_CSS = "/path/to/your/styles.css"
+
+Note that you will want to fork the provided CSS stylesheet and make
+any necessary changes, rather than starting from a fresh stylesheet.
+The stylesheet contains some non-standard language and configuration
+(defined and consumed by pisa) which is necessary for the pdf output
+to work properly.
 
 TODO: make the CSS file be TTW-managed content?
 
