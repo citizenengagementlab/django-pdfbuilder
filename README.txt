@@ -17,6 +17,7 @@ Installation
 
 2) Add "pdfbuilder" to your Django project's ``INSTALLED_APPS``
 
+3) Include the provided URLconf in your urls.py with a line like ``url(prefix, include("pdfbuilder.urls"))``
 3) Configure a data source function in ``settings.PDFBUILDER_DATA_SOURCE``
    (see below)
 
