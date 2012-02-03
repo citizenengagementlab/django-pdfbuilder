@@ -137,6 +137,12 @@ class PDFTemplate(object):
         return template
 
     @classmethod
+    def canvasmaker(cls, config):
+        if config.number_pages():
+            return NumberedCanvas
+        return canvas.Canvas
+
+    @classmethod
     def get_stylesheet(cls):
         return getSampleStyleSheet()['Normal']
 

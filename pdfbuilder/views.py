@@ -212,11 +212,6 @@ def page_export_pdf(request, config_id):
     print >> logger, "Finalizing %s PDF(s)..." % len(grouped_elements)
     logger.flush()
 
-    if config.number_pages():
-        canvasmaker = NumberedCanvas
-    else:
-        canvasmaker = canvas.Canvas
-
     comment = request.POST.get("comment", '')
 
     progress_logger = ReportlabProgressLogger(logger)
@@ -225,7 +220,7 @@ def page_export_pdf(request, config_id):
         template.reset_pdf_file()
         doc = template.doctemplate(config)
         doc.setProgressCallBack(progress_logger)
-        doc.build(elements, canvasmaker=canvasmaker)
+        doc.build(elements, canvasmaker=template.canvasmaker(config))
 
         fd, filename = template.pdf_file()
 
