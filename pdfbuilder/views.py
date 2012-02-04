@@ -255,7 +255,8 @@ def page_export_pdf(request, config_id):
                        configuration=config,
                        comment=comment,
                        data_source=data_source,
-                       group=key)
+                       group=key,
+                       cover_letter=request.POST.get('coverletter', ''))
         file = File(fp)
         pdf.file.save("%s-%s.pdf" % (config.pk, request.user), file)
         file.close()

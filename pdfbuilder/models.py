@@ -95,8 +95,9 @@ class SavedPdf(models.Model):
     configuration = models.ForeignKey(Configuration)
     author = models.ForeignKey(auth.User)
     file = models.FileField(upload_to="pdfs/%Y/%m/%d")
-    comment = models.TextField()
-
+    comment = models.TextField(null=True, blank=True)
+    cover_letter = models.TextField(null=True, blank=True)
+    
     # Store the key of the "grouping" of each PDF, 
     # e.g. 'default' (if no grouping) or 
     # e.g. "CT" or "MD" (if grouping by state) .. etc
