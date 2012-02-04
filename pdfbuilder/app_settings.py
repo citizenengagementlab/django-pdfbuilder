@@ -9,9 +9,9 @@ except AttributeError:
         resource_filename("pdfbuilder", "pisa-default.css"))
 
 try:
-    PDFBUILDER_COVERLETTER_TEMPLATE = settings.PDFBUILDER_COVERLETTER_TEMPLATE
+    PDFBUILDER_COVERLETTER_HTML = settings.PDFBUILDER_COVERLETTER_HTML
 except AttributeError:
-    PDFBUILDER_COVERLETTER_TEMPLATE = """
+    PDFBUILDER_COVERLETTER_HTML = """
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head><body>%s</body></html>"""

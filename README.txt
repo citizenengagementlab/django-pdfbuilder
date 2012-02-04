@@ -95,6 +95,14 @@ to work properly.
 
 TODO: make the CSS file be TTW-managed content?
 
+After being converted from markdown to HTML, the cover letter will
+be wrapped in a simple HTML wrapper with a <head> to declare UTF8
+content type and a <body> into which the cover letter contents
+are placed.  You can customize this HTML wrapper with a simple
+string to be interpolated in your ``settings.py`` for example::
+
+  PDFBUILDER_COVERLETTER_HTML = """
+  <html><body><h1>My Standard PDF Header</h1>%s</body></html>"""
 
 PDF Grouping Options
 ====================

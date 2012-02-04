@@ -47,8 +47,8 @@
 
 {% block pdfbuilder_content %}
   <div id="status"></div>
-  <form action="." method="POST"
-	onsubmit="submitAndPoll(); return false;">
+  <form action="." method="POST">
+
     {% csrf_token %}
     <input type="hidden" name="key" />
 
