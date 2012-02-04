@@ -1,3 +1,3 @@
 graft pdfbuilder/templates
-graft pdfbuilder/pisa-default.css
+include pdfbuilder/pisa-default.css
 
