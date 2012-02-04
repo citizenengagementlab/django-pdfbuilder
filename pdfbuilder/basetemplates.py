@@ -147,7 +147,7 @@ class PDFTemplate(object):
         return getSampleStyleSheet()['Normal']
 
     @classmethod
-    def generate_flowables(cls, sigs,
+    def generate_flowables(cls, entries,
                            number_entries=True, 
                            bucket_selector=None, log_callback=None):
 
@@ -155,13 +155,15 @@ class PDFTemplate(object):
         entry_prefixes = {}
         flowables_buckets = {}
 
-        for sig in sigs:
-            bucket_key = bucket_selector(flowables_buckets, sig)
+        cls.pre_generate_flowables(entries)
+
+        for entry in entries:
+            bucket_key = bucket_selector(flowables_buckets, entry)
             flowables_bucket = flowables_buckets[bucket_key]
             entry_prefix = entry_prefixes.setdefault(
                 bucket_key, cls.entry_prefix(number_entries))
 
-            flowable = cls.generate_flowable_from_entry(sig, entry_prefix, stylesheet, 
+            flowable = cls.generate_flowable_from_entry(entry, entry_prefix, stylesheet, 
                                                         flowables_bucket)
             if flowable is not None:
                 flowables_bucket.append(flowable)
@@ -170,6 +172,10 @@ class PDFTemplate(object):
                 log_callback(flowables_buckets)
         
         return cls.post_generate_flowables(flowables_buckets)
+
+    @classmethod
+    def pre_generate_flowables(cls, entries):
+        pass
 
     @classmethod
     def post_generate_flowables(cls, flowables_buckets):
