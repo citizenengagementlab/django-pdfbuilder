@@ -269,7 +269,13 @@ def page_export_pdf(request, config_id):
     logger.close()
     os.unlink(log_filename)
 
-    return pdf_table_snippet(request, saved_pdfs) 
+    if request.is_ajax():
+        return pdf_table_snippet(request, saved_pdfs) 
+    return pdf_table_results(request, saved_pdfs)
+
+@rendered_with("pdfbuilder/pdf_table.html")
+def pdf_table_results(request, saved_pdfs):
+    return {'saved_pdfs': saved_pdfs}
 
 @rendered_with("pdfbuilder/snippets/pdf_table.html")
 def pdf_table_snippet(request, saved_pdfs):
