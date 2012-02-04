@@ -154,19 +154,19 @@ def page_export_pdf(request, config_id):
 
     group_by = registry.get_grouping(config.group_by())
     
-    filter_by = config.filter_by()
+    #filter_by = config.filter_by()
     ## FIXME: this is ugly
-    def fixer(queryset, filter_by):
-        for item in queryset:
-            omit = False
-            for field in filter_by:
-                if getattr(item, field)() is None:
-                    omit = True
-                    break
-            if omit is True:
-                continue
-            yield item
-    queryset = fixer(queryset, filter_by)
+    #def fixer(queryset, filter_by):
+    #    for item in queryset:
+    #        omit = False
+    #        for field in filter_by:
+    #            if getattr(item, field)() is None:
+    #                omit = True
+    #                break
+    #        if omit is True:
+    #            continue
+    #        yield item
+    #queryset = fixer(queryset, filter_by)
 
     template = registry.get_template(config.template())
 
