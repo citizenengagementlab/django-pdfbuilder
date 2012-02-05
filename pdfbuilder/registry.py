@@ -4,7 +4,7 @@ def register_template(func, id, name=None):
 def available_templates():
     return [(key, val[1]) for key, val in _layout_templates.items()]
 def get_template(id):
-    return _layout_templates[id][0]
+    return _layout_templates[id][0]()
 def unregister_template(id):
     del _layout_templates[id]
 

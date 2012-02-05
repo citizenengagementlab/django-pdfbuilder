@@ -111,81 +111,72 @@ class PDFTemplate(object):
     _pdf_fd = None
     _pdf_filename = None
 
-    @classmethod
-    def reset_pdf_file(cls):
-        cls._pdf_fd = None
-        cls._pdf_filename = None
+    def reset_pdf_file(self):
+        self._pdf_fd = None
+        self._pdf_filename = None
 
-    @classmethod
-    def pdf_file(cls):
-        if cls._pdf_fd is not None and cls._pdf_filename is not None:
-            return cls._pdf_fd, cls._pdf_filename
+    def pdf_file(self):
+        if self._pdf_fd is not None and self._pdf_filename is not None:
+            return self._pdf_fd, self._pdf_filename
         fd, filename = tempfile.mkstemp(suffix=".pdf")
-        cls._pdf_fd = fd
-        cls._pdf_filename = filename
-        return cls._pdf_fd, cls._pdf_filename
+        self._pdf_fd = fd
+        self._pdf_filename = filename
+        return self._pdf_fd, self._pdf_filename
 
-    @classmethod
-    def doctemplate(cls, config):
-        fd, filename = cls.pdf_file()
+    def doctemplate(self, config):
+        fd, filename = self.pdf_file()
 
-        template = cls.doctemplatefactory(
+        template = self.doctemplatefactory(
             filename, pagesize=pagesizes.letter)
         template.pageheader = config.header()
         template.pagefooter = config.footer()
 
         return template
 
-    @classmethod
-    def canvasmaker(cls, config):
+    def canvasmaker(self, config):
         if config.number_pages():
             return NumberedCanvas
         return canvas.Canvas
 
-    @classmethod
-    def get_stylesheet(cls):
+    def get_stylesheet(self):
         return getSampleStyleSheet()['Normal']
 
-    @classmethod
-    def generate_flowables(cls, entries,
+    def generate_flowables(self, entries,
                            number_entries=True, 
                            bucket_selector=None, log_callback=None):
 
-        stylesheet = cls.get_stylesheet()
+        stylesheet = self.get_stylesheet()
         entry_prefixes = {}
         flowables_buckets = {}
 
-        cls.pre_generate_flowables(entries)
+        self.pre_generate_flowables(entries)
 
         for entry in entries:
             bucket_key = bucket_selector(flowables_buckets, entry)
             flowables_bucket = flowables_buckets[bucket_key]
             entry_prefix = entry_prefixes.setdefault(
-                bucket_key, cls.entry_prefix(number_entries))
+                bucket_key, self.entry_prefix(number_entries))
 
-            flowable = cls.generate_flowable_from_entry(entry, entry_prefix, stylesheet, 
-                                                        flowables_bucket)
+            flowable = self.generate_flowable_from_entry(entry, entry_prefix, stylesheet, 
+                                                         flowables_bucket)
             if flowable is not None:
                 flowables_bucket.append(flowable)
 
             if log_callback:
                 log_callback(flowables_buckets)
         
-        return cls.post_generate_flowables(flowables_buckets)
+        return self.post_generate_flowables(flowables_buckets)
 
-    @classmethod
-    def pre_generate_flowables(cls, entries):
+    def pre_generate_flowables(self, entries):
         pass
 
-    @classmethod
-    def post_generate_flowables(cls, flowables_buckets):
+    def post_generate_flowables(self, flowables_buckets):
         return flowables_buckets
 
-    @classmethod
-    def generate_flowable_from_entry(cls, entry, entry_prefix, stylesheet, bucket):
+    def generate_flowable_from_entry(self, entry, entry_prefix, stylesheet, bucket):
         """
         Implement in a subclass.  Should return a reportlab flowable
-        to be passed to ``cls.doctemplate.build``.
+        to be passed to ``doctemplate.build``.
 
         Alternatively you may need to generate multiple flowables for a single
         entry, or do other odd things.  In that case you can append your new
@@ -195,8 +186,7 @@ class PDFTemplate(object):
         """
         return Paragraph("%s%s" % (entry_prefix, str(entry)), stylesheet)
 
-    @classmethod
-    def entry_prefix(cls, should_number_entries):
+    def entry_prefix(self, should_number_entries):
         if should_number_entries:
             return "<seq id='%d'/>. " % random.randint(0, 10000)
         return ''

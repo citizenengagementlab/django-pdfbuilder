@@ -12,8 +12,7 @@ import random
 class ThreeColumnDown(PDFTemplate):
     doctemplatefactory = BaseDocTemplate
 
-    @classmethod
-    def get_stylesheet(cls):
+    def get_stylesheet(self):
         style = getSampleStyleSheet()['Normal']
         style.spaceAfter = style.fontSize
         return style
@@ -21,8 +20,7 @@ class ThreeColumnDown(PDFTemplate):
 
 class ThreeColumnAcross(PDFTemplate):
 
-    @classmethod
-    def generate_flowable_from_entry(cls, entry, entry_prefix, stylesheet, bucket):
+    def generate_flowable_from_entry(self, entry, entry_prefix, stylesheet, bucket):
         try:
             row = bucket[-1]
         except IndexError: # it's an empty list
@@ -36,8 +34,7 @@ class ThreeColumnAcross(PDFTemplate):
         data = "%s%s" % (entry_prefix, str(entry))
         row.append(Paragraph(data, stylesheet))
 
-    @classmethod
-    def post_generate_flowables(cls, flowables_buckets):
+    def post_generate_flowables(self, flowables_buckets):
         style = TableStyle([
                 ("VALIGN", (0,0), (-1,-1), "TOP"),
                 ("LINEBELOW", (0,0), (-1,-1), 1, colors.gray),
@@ -54,8 +51,7 @@ class ThreeColumnAcross(PDFTemplate):
 class OneColumn(PDFTemplate):    
     doctemplatefactory = OneColumnDocTemplate
 
-    @classmethod
-    def get_stylesheet(cls):
+    def get_stylesheet(self):
         styles = getSampleStyleSheet()
         styles['Heading1'].spaceAfter = 12
         styles['Heading1'].fontName = "Helvetica"
