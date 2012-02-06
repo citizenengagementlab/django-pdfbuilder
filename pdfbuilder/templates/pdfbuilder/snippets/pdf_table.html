@@ -6,6 +6,7 @@
   <th>Author</th>
   <th>Data source</th>
   <th>Grouping</th>
+  <th>Cover Letter</th>
   <th>Comment</th>
   <th>Configuration</th>
 </thead>
@@ -17,6 +18,7 @@
   <td>{{pdf.author.username}}</td>
   <td>{{pdf.data_source}}</td>
   <td>{{pdf.group}}</td>
+  <td><pre>{{pdf.cover_letter}}</pre></td>
   <td>{{pdf.comment}}</td>
   <td>
     {% with pdf.configuration as config %}
