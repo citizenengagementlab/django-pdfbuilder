@@ -199,7 +199,8 @@ def page_export_pdf(request, config_id):
         _default_css.close()
         del(_default_css)
         cover_letter = markdown.markdown(cover_letter)
-        cover_letter = app_settings.PDFBUILDER_COVERLETTER_HTML % cover_letter.encode("utf8")
+        cover_letter = app_settings.PDFBUILDER_COVERLETTER_FUNCTION(
+            cover_letter.encode("utf8"), request, config)
         fd, cover_letter_filename = tempfile.mkstemp(suffix=".pdf")
         cover_letter_file = open(cover_letter_filename, 'wb')
         pisa.CreatePDF(cover_letter, cover_letter_file, default_css=DEFAULT_CSS)
