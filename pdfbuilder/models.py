@@ -89,6 +89,9 @@ class Configuration(models.Model):
     def template(self):
         return self.get_option("template", "threecolumn_down")
 
+    def load_template(self):
+        from pdfbuilder import registry
+        return registry.get_template(self.template())
 
 class SavedPdf(models.Model):
     created = models.DateTimeField(auto_now_add=True)
